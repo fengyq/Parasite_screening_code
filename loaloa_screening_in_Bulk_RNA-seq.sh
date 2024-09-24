@@ -1,6 +1,6 @@
 #!/bin/bash
 # Author: Yuanqing Feng <fengyq>
-# Email: fengyq2018@gmail.com
+# Email: fengyuanqing2010@gmail.com
 
 # Variables for paths
 DATA_DIR=/YOURPATH           # Base directory for data
