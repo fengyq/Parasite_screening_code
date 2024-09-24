@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Author: Yuanqing Feng <fengyq>
-# Date:   2023-11-22 09:52:46
+# Email: fengyuanqing2010@gmail.com
 
 # Variables for directories and paths
 BASE_DIR=~/genome/parasite/Plasmodium/topmed_DNA  # Base directory for topmed DNA samples
