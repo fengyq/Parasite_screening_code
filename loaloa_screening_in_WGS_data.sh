@@ -1,5 +1,6 @@
 #!/bin/bash
-# Last Modified by:   fengyq
+# Author: Yuanqing Feng <fengyq>
+# Email: fengyuanqing2010@gmail.com
 
 # Variables for directories and paths
 GENOME_DIR=~/genome/parasite/loaloa          # Base directory for Loa loa genome
