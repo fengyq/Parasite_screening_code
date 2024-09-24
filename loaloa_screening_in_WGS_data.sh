@@ -47,7 +47,7 @@ while read -r x y; do
 done < bwa_00
 
 # ---------------------- 4. Remove ribosomal rRNA and count reads ------------------------
-for x in $(cat ${TOPMED_DNA_DIR}/ChaoRNA.ids); do
+for x in $(cat ${TOPMED_DNA_DIR}/sample.ids); do
   cd ${TOPMED_DNA_DIR}/$x || exit
   echo "Sample ID: $x" >> ${TOPMED_DNA_DIR}/loa.map.stat.tsv
   
