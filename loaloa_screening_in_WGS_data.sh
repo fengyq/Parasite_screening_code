@@ -94,32 +94,4 @@ sed 'N;s/\n/\t/;s/non_rRNA.*tsv//;' non_rRNA.M150.contigs.tsv | awk '{print $1,$
 # Combine counts from logs
 awk -v FS="\t" -v OFS="\t" 'NR==FNR {a[$1]=$0; next} {if($1 in a) print $0, a[$1]}' M150_Chrs_counts.log.sorted M150_reads_counts.log.sorted | cut -f 1,2,4 > M150_Chrs_counts.log.tsv
 
-# ---------------- 6. Map unmapped reads to Loa loa genome for single-cell RNA samples -----------------
-cd ${TOPMED_DNA_DIR}/singlecell
-while read -r x <&3 && read -r y <&4; do
-  echo "Sample ID: $x"
 
-  # Create directories for each single-cell sample
-  mkdir -p $x
-  cd ${TOPMED_DNA_DIR}/singlecell/$x || exit
-
-  echo "Start mapping $x to Loa loa"
-
-  # Map unmapped reads to Loa loa genome for single-cell RNA samples
-  samtools fastq -n $y | \
-    bwa mem -t10 -p ${BWA_INDEX_DIR}/loaloa.idx - | \
-    samtools view -@4 -hb -q 20 | samtools sort -@4 - > ${x}.loaloa.q20.bam
-  samtools index ${x}.loaloa.q20.bam
-
-  # Filter BAM and generate stats for reads with >100M
-  samtools view ${x}.loaloa.q20.bam | \
-    awk -v OFS="\t" '{$16=$6; gsub(/[0-9]*[S,D,I,H]/, "", $6); split($6, ma, "M"); if(ma[1]+ma[2]+ma[3]+ma[4] > 100) print $0}' | \
-    egrep -v "A{20,}|G{20,}|C{20,}|T{20,}" > ${x}.loaloa.q20.M100.sam
-  cut -f 3 ${x}.loaloa.q20.M100.sam | sort | uniq -c | sed 's/refseq/\t/' | sort -k1,1n > ${x}.loaloa.q20.M100.stat.tsv
-
-  # Further filter BAM for reads with >150M
-  awk '$6=="151M" && $3!="NW_018108197.1"' ${x}.loaloa.q20.M100.sam > ${x}.loaloa.q20.M150.sam
-  wc -l ${x}.loaloa.q20.M150.sam >> ../M150_reads_counts.log
-  cut -f 3 ${x}.loaloa.q20.M150.sam | sort | uniq -c | sed 's/refseq/\t/' | sort -k1,1n > ${x}.loaloa.q20.M150.stat.tsv
-
-done 3< SingleCell_RNA.baka.id 4< SingleCell_RNA.baka.intopmed.id
