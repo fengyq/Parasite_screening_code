@@ -15,7 +15,7 @@ source activate snakemake
 # ---------------------- filter all unmapped fastq ------------------------
 for x in $(cat ${DATA_DIR}/sample.ids); do
   # Change to the input directory
-  cd ${DATA_DIR}/Chao_unmap_fq || exit
+  cd ${DATA_DIR}/unmap_fq || exit
   # Create a directory for the sample
   echo "Sample ID: $x"
   mkdir "${x}" || exit
@@ -48,7 +48,7 @@ for x in $(cat ${DATA_DIR}/sample.ids); do
   STAR --genomeDir ${GENOME_DIR}/STAR_index/ \
     --runThreadN 10 \
     --readFilesCommand zcat \
-    --readFilesIn ${DATA_DIR}/Chao_unmap_fq/${x}/${x}_unaligned.good.fastq.gz \
+    --readFilesIn ${DATA_DIR}/unmap_fq/${x}/${x}_unaligned.good.fastq.gz \
     --outFileNamePrefix ${x}_loaloa_ \
     --outSAMtype BAM SortedByCoordinate \
     --outSAMunmapped None \
