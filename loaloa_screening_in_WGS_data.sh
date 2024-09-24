@@ -1,9 +1,5 @@
 #!/bin/bash
-
-# Author: fengpku
-# Date:   2023-02-23 10:50:41
 # Last Modified by:   fengyq
-# Last Modified time: Tuesday, April 4th 2023, 12:44:13 pm
 
 # Variables for directories and paths
 GENOME_DIR=~/genome/parasite/loaloa          # Base directory for Loa loa genome
