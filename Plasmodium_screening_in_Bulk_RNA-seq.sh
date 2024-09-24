@@ -1,25 +1,22 @@
 #!/bin/bash
 
 # Author: Yuanqing Feng <fengyq>
-# Email: fengyq2018@gmail.com
+# Email: fengyuanqing2010@gmail.com
 
 # Variables for paths
 DATA_DIR=~/data/parasite                       # Base directory for data
 GENOME_DIR=~/genome/parasite/Plasmodium      # Genome directory for P. falciparum
 RRNA_INDEX_DIR=~/genome/rRNA/rna_bwaidx        # Directory for rRNA index
 TOOL_DIR=~/tools/prinseq-lite-0.20.4           # Directory for Prinseq tool
-PROJECT_DIR=/YourPath  # Project directory for Chao's unmapped data
+PROJECT_DIR=/YourPath  # Project directory for unmapped fastq or bam data
 
 # Activate conda environment
 source activate snakemake
 
-# Split 496 samples into 10 files for parallel processing
-split -d -l 50 Chao_sample.ids Chao_S
-
 # ---------------------- filter all unmapped fastq ------------------------
 for x in $(cat ${DATA_DIR}/sample.id); do
   # Change to the input directory
-  cd ${DATA_DIR}/Chao_unmap_fq || exit
+  cd ${DATA_DIR}/unmap_fq || exit
   # Create a directory for the sample
   echo "Sample ID: $x"
   mkdir "${x}" || exit
@@ -53,7 +50,7 @@ for x in $(cat ${DATA_DIR}/sample.id); do
   STAR --genomeDir ${GENOME_DIR}/STAR_index/ \
     --runThreadN 10 \
     --readFilesCommand zcat \
-    --readFilesIn ${DATA_DIR}/Chao_unmap_fq/${x}/${x}_unaligned.good.fastq.gz \
+    --readFilesIn ${DATA_DIR}/unmap_fq/${x}/${x}_unaligned.good.fastq.gz \
     --outFileNamePrefix ${x}_Plasmodium_ \
     --outSAMtype BAM SortedByCoordinate \
     --outSAMunmapped None \
