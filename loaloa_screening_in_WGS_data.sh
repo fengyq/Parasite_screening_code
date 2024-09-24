@@ -106,7 +106,7 @@ while read -r x <&3 && read -r y <&4; do
   echo "Start mapping $x to Loa loa"
 
   # Map unmapped reads to Loa loa genome for single-cell RNA samples
-  samtools fastq -n /project/tishkofflab/data/genome/wgs/topmed/freeze10/unmapped_reads/cameroon/data/$y | \
+  samtools fastq -n $y | \
     bwa mem -t10 -p ${BWA_INDEX_DIR}/loaloa.idx - | \
     samtools view -@4 -hb -q 20 | samtools sort -@4 - > ${x}.loaloa.q20.bam
   samtools index ${x}.loaloa.q20.bam
